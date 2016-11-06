@@ -23,8 +23,9 @@ You want a client factory to create one for you!
 ## Features
 
 * Service instances discovery is based on *Curator Framework* directly. *Spring Cloud* is not required. In our testing, Spring Cloud forces you to enable web environment to discover other service instances which means you have to listen on a port.
-* If more than one instances are found in ZooKeeper, each API call selects the next instance (Round-Robin).
-* Save your investment to re-use mature *Retrofit* Java interface definition. You can easily remove this off your dependencies when you decide to use *Retrofit* only, hope not.
+* If more than one instances are found in ZooKeeper, every API-call selects the next service instance (Round-Robin).
+* The change of service instance will be reflected in api calls automatically even after the client is created, of course. 
+* Protect your investment to re-use your *Retrofit* Java interface definition. You can easily remove this project off your dependencies when you decide to use *Retrofit* only, hope not.
 * Support fixed list of server urls in testing if ZooKeeper environment is not passed in.
 * Loosen *Retrofit* standard. Both `Call<T>` and `T` are supported as return type.
 
@@ -92,5 +93,5 @@ accountApi.getAccount(500L);
 
 ## Consideration
 
-* The implementation returned is **Thread Safe**. You only need one instance for each service. Best used with IoC, like *Spring Framework* or *Guice*.
-* *CuratorFramework* instance creation is not necessary if you are using *Spring Cloud ZooKeeper*. Reuse it.
+* The implementation returned is **Thread Safe**. You only need one Api-Client instance for each service. Best used in  singleton pattern with IoC framework like *Spring Framework* or *Guice*.
+* The creation of *CuratorFramework* instance is not necessary if you are using *Spring Cloud ZooKeeper*. Re-use it if possible.
