@@ -9,9 +9,9 @@ import tech.hillview.api.curator.client.annotation.ApiClient;
 
 @ApiClient(service = "account-service", path = "/api/v1/", url = "http://localhost:8080")
 public interface AccountServiceApi {
-    @POST("account")
-    Long createAccount(@Body AccountCreationRequest request);
+  @POST("account")
+  Long createAccount(@Body AccountCreationRequest request);
 
-    @GET("account/{accountId}")
-    AccountInfo getAccount(@Path("accountId") Long accountId);
+  @GET("account/{accountId}")
+  AccountInfo getAccount(@Path("accountId") Long accountId);
 }

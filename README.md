@@ -26,15 +26,13 @@ You want a client factory to create one for you!
 * If more than one instances are found in ZooKeeper, each API call selects the next instance (Round-Robin).
 * Save your investment to re-use mature *Retrofit* Java interface definition. You can easily remove this off your dependencies when you decide to use *Retrofit* only, hope not.
 * Support fixed list of server urls in testing if ZooKeeper environment is not passed in.
-
+* Loosen *Retrofit* standard. Both `Call<T>` and `T` are supported as return type.
 
 ## Usage
 
 ### Prepare an API interface
 
 Have your API client annotated in [Retrofit](https://square.github.io/retrofit/) style.
-
-**NOTE**: Remember to change the return type from `Call<T>` to `T`. We will remove this restriction for the next release. Actually, we've done some work to support raw `T`.
 
 ```java
 public interface AccountServiceApi {
@@ -46,7 +44,9 @@ public interface AccountServiceApi {
 }
 ```
 
-### Apply @ApiClient annotation on it.
+**NOTE**: You can also use classic Retrofit `Call<T>` as return type. But do **NOT** mix them in the same interface. We cannot implement mixing style without modifying Retrofit itself.
+
+### Apply @ApiClient annotation
 
 ```java
 @ApiClient(service = "account-service", path = "/api/v1/", url = "http://localhost:8080")

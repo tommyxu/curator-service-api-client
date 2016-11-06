@@ -1,5 +1,8 @@
 .USE_EXTERNAL_MAVEN
-/build
+
 .gradle
 gradle.properties
 
+/build
+
+src/test/java/tech/hillview/api/curator/client/test/internal/
