@@ -24,7 +24,7 @@ You want a client factory to create one for you!
 
 * Service instances discovery is based on *Curator Framework* directly. *Spring Cloud* is not required. In our testing, Spring Cloud forces you to enable web environment to discover other service instances which means you have to listen on a port.
 * If more than one instances are found in ZooKeeper, every API-call selects the next service instance (Round-Robin).
-* The change of service instance will be reflected in api calls automatically even after the client is created, of course. 
+* The change of service instance will be automatically reflected in API calls even after the client is created. It is the basis, of course. 
 * Protect your investment to re-use your *Retrofit* Java interface definition. You can easily remove this project off your dependencies when you decide to use *Retrofit* only, hope not.
 * Support fixed list of server urls in testing if ZooKeeper environment is not passed in.
 * Loosen *Retrofit* standard. Both `Call<T>` and `T` are supported as return type.
