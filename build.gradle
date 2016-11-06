@@ -1,0 +1,126 @@
+group = 'tech.hillview'
+version = ('git describe --tags'.execute()).text.trim()
+
+buildscript {
+  repositories {
+    mavenCentral()
+    jcenter()
+  }
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+repositories {
+  mavenCentral()
+  jcenter()
+}
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+defaultTasks 'jar'
+
+jar {
+  manifest {
+    attributes(
+      "Implementation-Title": project.name,
+      "Implementation-Version": project.version
+      )
+  }
+}
+
+// idea {
+//   module {
+//     inheritOutputDirs = false
+//       outputDir = file("$buildDir/classes/main/")
+//   }
+// }
+
+configurations {
+  all*.exclude group: 'log4j'
+  all*.exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+}
+
+dependencies {
+  compile 'org.apache.zookeeper:zookeeper:3.4.9'
+  compile 'org.apache.curator:curator-x-discovery:2.11.0'
+  compile 'org.apache.curator:curator-framework:2.11.0'
+
+  compile 'com.google.guava:guava:17.0'
+
+  compile 'com.squareup.retrofit2:retrofit:2.1.0'
+  compile 'com.squareup.retrofit2:converter-jackson:2.1.0'
+
+  compile 'org.slf4j:slf4j-api:1.7.21'
+
+  testCompile 'ch.qos.logback:logback-core:1.1.7'
+  testCompile 'ch.qos.logback:logback-classic:1.1.7'
+  testCompile 'org.slf4j:jcl-over-slf4j:1.7.21'
+
+  testCompile 'junit:junit:4.12'
+  testCompile 'org.springframework:spring-test:4.2.8.RELEASE'
+  testCompile 'org.springframework:spring-context:4.2.8.RELEASE'
+  testCompile 'org.springframework:spring-beans:4.2.8.RELEASE'
+  testCompile 'org.springframework:spring-aop:4.2.8.RELEASE'
+
+  // testCompile 'org.assertj:assertj-core:3.5.2'
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+  classifier = 'sources'
+  from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+  classifier = 'javadoc'
+  from javadoc.destinationDir
+}
+
+artifacts {
+  archives sourcesJar
+  archives javadocJar
+}
+
+signing {
+  sign configurations.archives
+}
+
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment)  }
+      repository(url: "file:///Users/tommy/myrepo/")
+      pom.project {
+        licenses {
+          license {
+            name 'The Apache Software License, Version 2.0'
+            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+            distribution 'repo'
+          }
+        }
+        name "${project.group}:${project.name}"
+        description 'Api-client proxy for services registered in ZooKeeper via curator with Service Discovery and Load balancing.'
+        url 'https://github.com/tommyxu/curator-service-api-client.git'
+        scm {
+          url 'https://github.com/tommyxu/curator-service-api-client.git'
+        }
+        developers {
+          developer {
+            name 'Tommy Xu'
+            email "xuyijun@gmail.com"
+            organization 'Sonatype'
+            organizationUrl 'https://github.com/tommyxu'
+          }
+        }
+      }
+    }
+  }
+}
+
+task bump << {
+  print(version)
+}

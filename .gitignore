@@ -1,0 +1,5 @@
+.USE_EXTERNAL_MAVEN
+/build
+.gradle
+gradle.properties
+
