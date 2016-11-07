@@ -83,12 +83,13 @@ Annotation properties:
 ### Create ApiClientFactory
 
 ```java
-// CuratorFramework curator = CuratorFrameworkFactory.newClient(zkUri, ...);
+CuratorFramework curator = CuratorFrameworkFactory.newClient(zkUri, ...);
 //
 // or
 //
-// @Bean /* SpringFramework */
-// public ApiClientFactory apiClientFactory(CuratorFramework curator) ...
+@Bean /* SpringFramework */
+public ApiClientFactory apiClientFactory(CuratorFramework curator) { ... }
+
 
 ApiClientFactory apiClientFactory = new ApiClientFactoryImpl(curator);
 ```
@@ -101,13 +102,13 @@ If no curator is provided (or null), the ```url``` property on @ApiClient annota
 AccountServiceApi accountApi = apiClientFactory.create(AccountServiceApi.class);
 ```
 
-All's done. Now you can call
+All's done. Now you can call:
 
 ```java
 accountApi.getAccount(500L);
 ```
 
-> If HTTP response error (4xx or 5xx) is caught, an ApiServiceException is thrown out. If there is some IO errors, an ApiCallException is thrown out.
+> If HTTP response error (4xx or 5xx) is caught, an ApiServiceException is thrown out. If IO error occurs, an ApiCallException is thrown out.
 
 ## Consideration
 
