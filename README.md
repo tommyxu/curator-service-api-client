@@ -61,6 +61,7 @@ Annotation properties:
 * service: service name registered in ZooKeeper `/services`
 * path: a path prefix. It is prepend before the target url defined in @GET/@POST
 * url: a list of server address (host:port). This is optional if you only use ZooKeeper to find service instances.
+* errorBodyType: the Class<?> of the errorBody. The body of an error http response (4xx, 5xx) will be converted to this type via JacksonMapper. The default value is `String.class` which means no conversion required.
 
 > All java classes provided by this project are under package *tech.hillview.api.curator.client*
 
@@ -90,6 +91,8 @@ All's done. Now you can call
 ```java
 accountApi.getAccount(500L);
 ```
+
+> If HTTP response error (4xx or 5xx) is caught, an ApiServiceException is thrown out. If there is some IO errors, an ApiCallException is thrown out.
 
 ## Consideration
 
