@@ -17,6 +17,14 @@ import java.lang.reflect.Type;
 public class DirectCallAdapterFactory extends CallAdapter.Factory {
   private Logger log = LoggerFactory.getLogger(DirectCallAdapterFactory.class);
 
+  private ApiInterfaceMeta interfaceMeta;
+  private final ApiServiceExceptionConverter exceptionConverter;
+
+  public DirectCallAdapterFactory(ApiInterfaceMeta interfaceMeta, ApiServiceExceptionConverter exceptionConverter) {
+    this.interfaceMeta = interfaceMeta;
+    this.exceptionConverter = exceptionConverter;
+  }
+
   @Override
   public CallAdapter<?> get(final Type returnType, Annotation[] annotations, Retrofit retrofit) {
     log.info("get a new call adapter.");
@@ -44,8 +52,10 @@ public class DirectCallAdapterFactory extends CallAdapter.Factory {
             if (response.isSuccessful()) {
               return response.body();
             } else {
-              throw new ApiServiceException(response.errorBody().string());
+              return exceptionConverter.convert(response.code(), response.errorBody().bytes(), interfaceMeta.getErrorBodyType());
             }
+          } catch (ApiServiceException serviceException) {
+            throw serviceException;
           } catch (Exception e) {
             throw new ApiCallException(e.getMessage(), e);
           }

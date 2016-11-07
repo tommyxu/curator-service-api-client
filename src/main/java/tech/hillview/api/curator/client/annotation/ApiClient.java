@@ -10,7 +10,9 @@ import java.lang.annotation.Target;
 public @interface ApiClient {
   String service(); // for search in the zookeeper registry
 
-  String[] url() default {}; // for fixed server list, no tail slash
-
   String path() default ""; // path prefix, /api/v1/
+
+  Class<?> errorBodyType() default String.class;
+
+  String[] url() default {}; // for fixed server list, no tail slash
 }

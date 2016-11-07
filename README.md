@@ -1,6 +1,6 @@
 # curator-service-api-client
 
-API client factory for services registered in *ZooKeeper* via *Curator* or *Spring Cloud* with features like **Service Discovery** and **Load balancing**.
+API client factory for Restful services registered in *ZooKeeper* via *Curator* or *Spring Cloud* with features like **Service Discovery** and **Load balancing**.
 
 ## What‘s This
 

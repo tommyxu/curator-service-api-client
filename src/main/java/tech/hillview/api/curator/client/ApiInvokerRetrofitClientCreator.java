@@ -1,5 +1,6 @@
 package tech.hillview.api.curator.client;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.curator.x.discovery.ServiceInstance;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
@@ -27,10 +28,14 @@ class ApiInvokerRetrofitClientCreator implements ApiInvokerCreator {
       port,
       apiInterfaceMeta.getPath());
 
+    ObjectMapper objectMapper = new ObjectMapper();
+
+    ApiServiceExceptionConverter exceptionConverter = new ApiServiceExceptionConverterImpl(objectMapper);
+
     Retrofit retrofit = new Retrofit.Builder()
       .baseUrl(fullUrl)
-      .addCallAdapterFactory(new DirectCallAdapterFactory())
-      .addConverterFactory(JacksonConverterFactory.create())
+      .addCallAdapterFactory(new DirectCallAdapterFactory(apiInterfaceMeta, exceptionConverter))
+      .addConverterFactory(JacksonConverterFactory.create(objectMapper))
       .build();
 
     T api = retrofit.create(apiInterface);
