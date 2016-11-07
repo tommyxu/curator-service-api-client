@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import tech.hillview.api.curator.client.exception.ApiCallException;
 
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Optional;
@@ -68,10 +69,19 @@ public class ApiClientFactoryImpl implements ApiClientFactory {
             return apiInvoker;
           });
 
-          return method.invoke(target, args);
+          try {
+            return method.invoke(target, args);
+          } catch (InvocationTargetException invocationException) {
+            if (invocationException.getTargetException() != null) {
+              throw invocationException.getTargetException();
+            } else {
+              throw invocationException;
+            }
+          }
         } else {
           throw new ApiCallException("No server instance");
-        }      }
+        }
+      }
     });
 
     return (T) proxy;

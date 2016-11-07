@@ -1,17 +1,13 @@
 package tech.hillview.api.curator.client.test.api;
 
-/**
- * JSend standard error response
- */
-public class ErrorResponse {
+public class ErrorBody {
 
-  private String status = "error";
+  private String status;
 
   private String message;
 
   private String code;
 
-//  @JsonInclude(JsonInclude.Include.NON_NULL)
   private String detail;
 
   public String getStatus() {
@@ -48,7 +44,7 @@ public class ErrorResponse {
 
   @Override
   public String toString() {
-    return "ErrorResponse{" +
+    return "ErrorBody{" +
       "status='" + status + '\'' +
       ", message='" + message + '\'' +
       ", code='" + code + '\'' +
