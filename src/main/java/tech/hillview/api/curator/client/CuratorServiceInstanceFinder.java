@@ -1,10 +1,12 @@
 package tech.hillview.api.curator.client;
 
 import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.state.ConnectionState;
 import org.apache.curator.x.discovery.ServiceCache;
 import org.apache.curator.x.discovery.ServiceDiscovery;
 import org.apache.curator.x.discovery.ServiceDiscoveryBuilder;
 import org.apache.curator.x.discovery.ServiceInstance;
+import org.apache.curator.x.discovery.details.ServiceCacheListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tech.hillview.api.curator.client.exception.ApiCallException;
@@ -44,35 +46,32 @@ class CuratorServiceInstanceFinder implements ServiceInstanceFinder {
 //      //      serviceDiscovery.start();
 //      //      instances = new ArrayList<>(serviceDiscovery.queryForInstances(serviceName));
 //      //      serviceDiscovery.close();
-//    } catch (Exception ex) {
+    //    return instances;
+    //    } catch (Exception ex) {
 //      throw new ApiCallException("Cannot start service discovery", ex);
 //    }
-    //    return instances;
 
     serviceCache = serviceDiscovery.serviceCacheBuilder()
       .name(serviceName)
       .build();
 
-    //    serviceCache.addListener(new ServiceCacheListener() {
-    //      @Override
-    //      public void cacheChanged() {
-    ////        log.info("Instance Changed:", serviceCache.getInstances());
-    //      }
-    //      @Override
-    //      public void stateChanged(CuratorFramework client, ConnectionState newState) {
-    ////        log.warn("ZooKeeper connection state changed: {}", newState);
-    //      }
-    //    });
+    serviceCache.addListener(new ServiceCacheListener() {
+      @Override
+      public void cacheChanged() {
+        log.debug("service {} instance changed:", serviceName, serviceCache.getInstances());
+      }
+      @Override
+      public void stateChanged(CuratorFramework client, ConnectionState newState) {
+//        log.warn("ZooKeeper connection state changed: {}", newState);
+      }
+    });
+
     try {
       serviceCache.start();
     } catch (Exception ex) {
       throw new ApiCallException("Cannot start service discovery", ex);
     }
   }
-
-  //  @PostConstruct() {
-//
-//  }
 
   @PreDestroy
   public void close() {

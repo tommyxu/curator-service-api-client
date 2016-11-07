@@ -121,6 +121,13 @@ uploadArchives {
   }
 }
 
-task bump << {
+test {
+  testLogging {
+    // showStandardStreams = true
+  }
+}
+
+task version << {
   print(version)
 }
+

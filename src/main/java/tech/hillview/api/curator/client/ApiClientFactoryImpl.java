@@ -65,7 +65,7 @@ public class ApiClientFactoryImpl implements ApiClientFactory {
           String cacheKey = serviceInstance.getId() + serviceInstance.getAddress(); // serviceInstance.getPort() + serviceInstance.getSslPort();
           T target = cache.get(cacheKey, () -> {
             T apiInvoker = apiInvokerCreator.getInvoker(apiInterface, apiInterfaceMeta, serviceInstance);
-            log.info("create api {} for service instance: {}", apiInterfaceMeta.getService(), serviceInstance.getId());
+            log.debug("create api {} for service instance: {}", apiInterfaceMeta.getService(), serviceInstance.getId());
             return apiInvoker;
           });
 
