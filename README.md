@@ -148,5 +148,5 @@ class UserService {
 
 Note:
 
-* The implementation return from `ApiClientFactory.create()` is **Thread-Safe**. You only need one ApiClient instance for each service. Best used in singleton pattern with IoC framework, such as *Spring Framework* or *Guice*.
+* The implementation return from `ApiClientFactory.create()` is **Thread-Safe**. You only need one API client instance for each service. Best used in singleton pattern with IoC framework, such as *Spring Framework* or *Guice*.
 * The creation of *CuratorFramework* instance is not necessary if you are using *Spring Cloud ZooKeeper*. Re-use it if possible.
