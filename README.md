@@ -86,7 +86,7 @@ If no curator is provided (or null), the ```url``` property on @ApiClient annota
 AccountServiceApi accountApi = apiClientFactory.create(AccountServiceApi.class);
 ```
 
-All's done. Now you can call
+All's done. Now you can call:
 
 ```java
 accountApi.getAccount(500L);
