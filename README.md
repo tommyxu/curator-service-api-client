@@ -68,12 +68,13 @@ Annotation properties:
 ### Create ApiClientFactory
 
 ```java
-// CuratorFramework curator = CuratorFrameworkFactory.newClient(zkUri, ...);
+CuratorFramework curator = CuratorFrameworkFactory.newClient(zkUri, ...);
 //
 // or
 //
-// @Bean /* SpringFramework */
-// public ApiClientFactory apiClientFactory(CuratorFramework curator) ...
+@Bean /* SpringFramework */
+public ApiClientFactory apiClientFactory(CuratorFramework curator) { ... }
+
 
 ApiClientFactory apiClientFactory = new ApiClientFactoryImpl(curator);
 ```
