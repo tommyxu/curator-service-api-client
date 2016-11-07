@@ -41,12 +41,16 @@ jar {
 // }
 
 configurations {
-  all*.exclude group: 'log4j'
-  all*.exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+  all*.exclude group: 'log4j', module: 'log4j'
+  // all*.exclude group: 'log4j'
+  // all*.exclude group: 'org.slf4j', module: 'slf4j-log4j12'
 }
 
 dependencies {
-  compile 'org.apache.zookeeper:zookeeper:3.4.9'
+  compile('org.apache.zookeeper:zookeeper:3.4.9') {
+    exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+  }
+
   compile 'org.apache.curator:curator-x-discovery:2.11.0'
   compile 'org.apache.curator:curator-framework:2.11.0'
 
@@ -57,20 +61,19 @@ dependencies {
 
   compile 'org.slf4j:slf4j-api:1.7.21'
 
-  compile 'org.springframework:spring-context:4.2.8.RELEASE'
-  compile 'org.springframework:spring-beans:4.2.8.RELEASE'
+  compileOnly 'org.springframework:spring-context:4.2.8.RELEASE'
+  compileOnly 'org.springframework:spring-beans:4.2.8.RELEASE'
 
   testCompile 'ch.qos.logback:logback-core:1.1.7'
   testCompile 'ch.qos.logback:logback-classic:1.1.7'
   testCompile 'org.slf4j:jcl-over-slf4j:1.7.21'
 
   testCompile 'junit:junit:4.12'
+  // testCompile 'org.assertj:assertj-core:3.5.2'
+
   testCompile 'org.springframework:spring-test:4.2.8.RELEASE'
   testCompile 'org.springframework:spring-context:4.2.8.RELEASE'
   testCompile 'org.springframework:spring-beans:4.2.8.RELEASE'
-  testCompile 'org.springframework:spring-aop:4.2.8.RELEASE'
-
-  // testCompile 'org.assertj:assertj-core:3.5.2'
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
