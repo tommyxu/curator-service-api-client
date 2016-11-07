@@ -1,3 +1,8 @@
+/**
+ *                                  Apache License
+ *                            Version 2.0, January 2004
+ *                         http://www.apache.org/licenses/
+ */
 package tech.hillview.api.curator.client;
 
 import org.apache.curator.x.discovery.ServiceInstance;

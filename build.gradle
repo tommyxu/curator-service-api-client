@@ -1,12 +1,16 @@
-group = 'tech.hillview'
-version = ('git describe --tags'.execute()).text.trim()
-
 buildscript {
   repositories {
     mavenCentral()
     jcenter()
   }
 }
+
+plugins {
+  id "com.github.hierynomus.license" version "0.13.1"
+}
+
+group = 'tech.hillview'
+version = ('git describe --tags'.execute()).text.trim()
 
 apply plugin: 'java'
 apply plugin: 'idea'
@@ -101,6 +105,12 @@ uploadArchives {
       beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment)  }
       repository(url: "file:///Users/tommy/myrepo/")
       pom.project {
+        name "${project.group}:${project.name}"
+        description 'Api-client proxy for services registered in ZooKeeper via curator with Service Discovery and Load balancing.'
+        url 'https://github.com/tommyxu/curator-service-api-client.git'
+        scm {
+          url 'https://github.com/tommyxu/curator-service-api-client.git'
+        }
         licenses {
           license {
             name 'The Apache Software License, Version 2.0'
@@ -108,18 +118,16 @@ uploadArchives {
             distribution 'repo'
           }
         }
-        name "${project.group}:${project.name}"
-        description 'Api-client proxy for services registered in ZooKeeper via curator with Service Discovery and Load balancing.'
-        url 'https://github.com/tommyxu/curator-service-api-client.git'
-        scm {
-          url 'https://github.com/tommyxu/curator-service-api-client.git'
+        organization {
+          name 'github'
+          url 'https://github.com/tommyxu'
         }
         developers {
           developer {
             name 'Tommy Xu'
             email "xuyijun@gmail.com"
-            organization 'Sonatype'
-            organizationUrl 'https://github.com/tommyxu'
+//            organization 'Sonatype'
+//            organizationUrl 'https://github.com/tommyxu'
           }
         }
       }
@@ -137,3 +145,7 @@ task version << {
   print(version)
 }
 
+license {
+  header rootProject.file('LICENSE_HEADER')
+  strictCheck true
+}
