@@ -6,15 +6,14 @@ API client factory for Restful services registered in *ZooKeeper* via *Curator* 
 Table of Contents
 =================
 
-   * [curator-service-api-client](#curator-service-api-client)
-      * [What's This](#whats-this)
-      * [Features](#features)
-      * [Usage](#usage)
-         * [Prepare an API interface](#prepare-an-api-interface)
-         * [Apply @ApiClient annotation](#apply-apiclient-annotation)
-         * [Create ApiClientFactory](#create-apiclientfactory)
-         * [Create ApiClient implementation](#create-apiclient-implementation)
-      * [Consideration](#consideration)
+  * [What's This](#whats-this)
+  * [Features](#features)
+  * [Usage](#usage)
+     * [Prepare an API interface](#prepare-an-api-interface)
+     * [Apply @ApiClient annotation](#apply-apiclient-annotation)
+     * [Create ApiClientFactory](#create-apiclientfactory)
+     * [Create ApiClient implementation](#create-apiclient-implementation)
+  * [Consideration](#consideration)
 
 
 ## What's This
