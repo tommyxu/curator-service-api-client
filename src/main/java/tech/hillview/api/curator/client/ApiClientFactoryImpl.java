@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 
 public class ApiClientFactoryImpl implements ApiClientFactory {
 
-  private Logger log = LoggerFactory.getLogger(ApiClientFactoryImpl.class);
+  private static final Logger log = LoggerFactory.getLogger(ApiClientFactoryImpl.class);
 
   private CuratorFramework curator;
 

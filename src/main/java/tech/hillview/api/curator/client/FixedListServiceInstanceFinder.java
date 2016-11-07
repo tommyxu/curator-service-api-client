@@ -1,9 +1,9 @@
 package tech.hillview.api.curator.client;
 
-import tech.hillview.api.curator.client.exception.ApiConfigException;
 import org.apache.curator.x.discovery.ServiceInstance;
 import org.apache.curator.x.discovery.ServiceType;
 import org.apache.curator.x.discovery.UriSpec;
+import tech.hillview.api.curator.client.exception.ApiConfigException;
 
 import java.net.MalformedURLException;
 import java.net.URL;

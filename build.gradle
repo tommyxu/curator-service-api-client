@@ -57,6 +57,9 @@ dependencies {
 
   compile 'org.slf4j:slf4j-api:1.7.21'
 
+  compile 'org.springframework:spring-context:4.2.8.RELEASE'
+  compile 'org.springframework:spring-beans:4.2.8.RELEASE'
+
   testCompile 'ch.qos.logback:logback-core:1.1.7'
   testCompile 'ch.qos.logback:logback-classic:1.1.7'
   testCompile 'org.slf4j:jcl-over-slf4j:1.7.21'

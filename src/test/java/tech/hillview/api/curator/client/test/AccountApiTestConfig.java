@@ -8,13 +8,14 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import tech.hillview.api.curator.client.ApiClientFactory;
 import tech.hillview.api.curator.client.ApiClientFactoryImpl;
+import tech.hillview.api.curator.client.spring.ApiClientBeanRegister;
 import tech.hillview.api.curator.client.test.api.AccountServiceApi;
+import tech.hillview.api.curator.client.test.internal.WalletServiceApi;
 
 
 @Configuration
-@ComponentScan
+@ComponentScan(basePackageClasses = WalletServiceApi.class)
 public class AccountApiTestConfig {
-
   @Bean
   public CuratorFramework curatorFramework() throws InterruptedException {
     final String zkUri = "192.168.99.100:2181";
@@ -32,5 +33,13 @@ public class AccountApiTestConfig {
   @Bean
   public AccountServiceApi accountServiceApi(ApiClientFactory apiClientFactory) {
     return apiClientFactory.create(AccountServiceApi.class);
+  }
+
+  @Bean
+  public ApiClientBeanRegister scanner(ApiClientFactory apiClientFactory) {
+    ApiClientBeanRegister register = new ApiClientBeanRegister();
+    register.setApiClientFactory(apiClientFactory);
+    register.setPackageNames(new String[] { "tech.hillview.api.curator.client.test" });
+    return register;
   }
 }
