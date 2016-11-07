@@ -13,7 +13,7 @@ Table of Contents
      * [Apply @ApiClient annotation](#apply-apiclient-annotation)
      * [Create ApiClientFactory](#create-apiclientfactory)
      * [Create ApiClient implementation](#create-apiclient-implementation)
-  * [Consideration](#consideration)
+  * [Spring Integration](#spring-integration)
 
 
 ## What's This
@@ -38,7 +38,7 @@ You want a client factory to create one for you!
 
 * Service instances discovery is based on *Curator Framework* directly. *Spring Cloud* is **NOT** required. In our testing, *Spring Cloud* forces you to enable web environment to discover other service instances which means you have to start web environment and listen on a port.
 * If more than one instances are found in ZooKeeper, every API-call selects the next service instance (Round-Robin).
-* The change of service instances will be automatically reflected in the coming API calls even after the client is created. It is the basis, of course. 
+* The change of service instances will be automatically reflected in the coming API calls even after the client is created. It is the basis, of course.
 * Protect your investment to re-use your *Retrofit* Java interface definition. You can easily remove this project off your dependencies when you decide to use *Retrofit* only, hope not.
 * Support fixed list of server urls in testing if ZooKeeper environment is not passed in.
 * Loosen *Retrofit* standard. Both `Call<T>` and `T` are supported as return type.
@@ -83,12 +83,8 @@ Annotation properties:
 
 ```java
 CuratorFramework curator = CuratorFrameworkFactory.newClient(zkUri, ...);
-//
-// or
-//
-@Bean /* SpringFramework */
-public ApiClientFactory apiClientFactory(CuratorFramework curator) { ... }
-
+curator.start();
+curator.blockUntilConnected();
 
 ApiClientFactory apiClientFactory = new ApiClientFactoryImpl(curator);
 ```
@@ -109,7 +105,48 @@ accountApi.getAccount(500L);
 
 > If HTTP response error (4xx or 5xx) is caught, an ApiServiceException is thrown out. If IO error occurs, an ApiCallException is thrown out.
 
-## Consideration
+## Spring Integration
 
-* The implementation returned is **Thread Safe**. You only need one Api-Client instance for each service. Best used in  singleton pattern with IoC framework like *Spring Framework* or *Guice*.
+We provide a scanner to create and register `@ApiClient` bean automatically. So you can `@Autowired` these clients later.
+
+```java
+@Bean
+public CuratorFramework curatorFramework() throws InterruptedException {
+  final String zkUri = "localhost:2181";
+  CuratorFramework curator = CuratorFrameworkFactory.newClient(zkUri, new ExponentialBackoffRetry(2000, 15));
+  curator.start();
+  curator.blockUntilConnected();
+  return curator;
+}
+
+@Bean
+public ApiClientFactory apiClientFactory(CuratorFramework curator) {
+  return new ApiClientFactoryImpl(curator);
+}
+
+@Bean
+public ApiClientBeanRegister scanner(ApiClientFactory apiClientFactory) {
+  ApiClientBeanRegister register = new ApiClientBeanRegister();
+  register.setApiClientFactory(apiClientFactory);
+  register.setPackageNames(new String[] { "tech.hillview.api.curator.client.test" });
+  return register;
+}
+```
+
+In your service code:
+
+```java
+@Service
+class UserService {
+
+  @Autowired
+  private AccountServiceApi accountServiceApi;
+
+  // ...
+}
+```
+
+Note:
+
+* The implementation return from `ApiClientFactory.create()` is **Thread-Safe**. You only need one ApiClient instance for each service. Best used in singleton pattern with IoC framework, such as *Spring Framework* or *Guice*.
 * The creation of *CuratorFramework* instance is not necessary if you are using *Spring Cloud ZooKeeper*. Re-use it if possible.
