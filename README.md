@@ -92,7 +92,7 @@ All's done. Now you can call
 accountApi.getAccount(500L);
 ```
 
-> If HTTP response error (4xx or 5xx) is caught, an ApiServiceException is thrown out. If there is some IO errors, an ApiCallException is thrown out.
+> If HTTP response error (4xx or 5xx) is caught, an ApiServiceException is thrown out. If IO error occurs, an ApiCallException is thrown out.
 
 ## Consideration
 
