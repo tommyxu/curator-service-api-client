@@ -77,7 +77,7 @@ Annotation properties:
 ApiClientFactory apiClientFactory = new ApiClientFactoryImpl(curator);
 ```
 
-If no curator is provided (or null), the ```url``` property on @ApiClient annotation is used as service instances.
+If no curator is provided (or null), the ```url``` property on @ApiClient annotation is used to locate service instances.
 
 ### Create ApiClient implementation
 
