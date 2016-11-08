@@ -9,8 +9,7 @@ plugins {
   id "com.github.hierynomus.license" version "0.13.1"
 }
 plugins {
-    id "net.vivin.gradle-semantic-build-versioning" version "2.0.2"
-
+  id "net.vivin.gradle-semantic-build-versioning" version "2.0.2"
 }
 
 group = 'tech.hillview'
@@ -145,8 +144,6 @@ uploadArchives {
             id 'tommyxu'
             name 'Tommy Xu'
             email "xuyijun@gmail.com"
-//            organization 'Sonatype'
-//            organizationUrl 'https://github.com/tommyxu'
           }
         }
       }
@@ -158,10 +155,6 @@ test {
   testLogging {
     // showStandardStreams = true
   }
-}
-
-task ver << {
-  print(version)
 }
 
 license {
