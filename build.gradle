@@ -168,3 +168,10 @@ license {
   header rootProject.file('LICENSE_HEADER')
   strictCheck true
 }
+
+project.version.with {
+  // matching {
+  //   major = 1
+  //   minor = 2
+  // }
+}
