@@ -13,7 +13,7 @@ plugins {
 }
 
 group = 'tech.hillview'
-description = 'Curator-Service-Api-Client is an API client factory for services registered in ZooKeeper via Curator Framework or Spring Cloud ZooKeeper, featuring Service Discovery and Load balancing.'
+// description = 'Curator-Service-Api-Client is an API client factory for services registered in ZooKeeper via Curator Framework or Spring Cloud ZooKeeper, featuring Service Discovery and Load balancing.'
 // version = ('git describe --tags'.execute()).text.trim()
 
 apply plugin: 'java'
@@ -122,7 +122,7 @@ uploadArchives {
 
       pom.project {
         name "${project.group}:${project.name}"
-        description description
+        description 'Curator-Service-Api-Client is an API client factory for services registered in ZooKeeper via Curator Framework or Spring Cloud ZooKeeper, featuring Service Discovery and Load balancing.'
         url 'https://github.com/tommyxu/curator-service-api-client.git'
         scm {
           url 'https://github.com/tommyxu/curator-service-api-client.git'
