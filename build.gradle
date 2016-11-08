@@ -8,9 +8,13 @@ buildscript {
 plugins {
   id "com.github.hierynomus.license" version "0.13.1"
 }
+plugins {
+    id "net.vivin.gradle-semantic-build-versioning" version "2.0.2"
+
+}
 
 group = 'tech.hillview'
-version = ('git describe --tags'.execute()).text.trim()
+// version = ('git describe --tags'.execute()).text.trim()
 
 apply plugin: 'java'
 apply plugin: 'idea'
@@ -103,13 +107,27 @@ uploadArchives {
   repositories {
     mavenDeployer {
       beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment)  }
-      repository(url: "file:///Users/tommy/myrepo/")
+      /**
+      * Download snapshot and release artifacts from group https://oss.sonatype.org/content/groups/public
+      * Download snapshot, release and staged artifacts from staging group https://oss.sonatype.org/content/groups/staging
+      */
+
+      // repository(url: "file:///Users/tommy/myrepo/")
+      repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+        authentication(userName: ossrhUsername, password: ossrhPassword)
+      }
+
+      snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+        authentication(userName: ossrhUsername, password: ossrhPassword)
+      }
+
       pom.project {
         name "${project.group}:${project.name}"
         description 'Api-client proxy for services registered in ZooKeeper via curator with Service Discovery and Load balancing.'
         url 'https://github.com/tommyxu/curator-service-api-client.git'
         scm {
           url 'https://github.com/tommyxu/curator-service-api-client.git'
+          connection 'scm:git@github.com:tommyxu/curator-service-api-client.git'
         }
         licenses {
           license {
@@ -124,6 +142,7 @@ uploadArchives {
         }
         developers {
           developer {
+            id 'tommyxu'
             name 'Tommy Xu'
             email "xuyijun@gmail.com"
 //            organization 'Sonatype'
@@ -141,7 +160,7 @@ test {
   }
 }
 
-task version << {
+task ver << {
   print(version)
 }
 
