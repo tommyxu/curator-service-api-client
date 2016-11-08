@@ -49,7 +49,7 @@ public class AccountApiTestConfig {
 
   @Bean
   public ApiClientFactory apiClientFactory(CuratorFramework curator) {
-    return new ApiClientFactoryImpl(curator);
+    return ApiClientFactory.create(curator);
   }
 
   @Bean
