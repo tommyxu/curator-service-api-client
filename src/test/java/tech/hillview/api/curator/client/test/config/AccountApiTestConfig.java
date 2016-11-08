@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import tech.hillview.api.curator.client.ApiClientFactory;
 import tech.hillview.api.curator.client.ApiClientFactoryImpl;
 import tech.hillview.api.curator.client.spring.ApiClientBeanRegister;
-import tech.hillview.api.curator.client.test.server.ApiServer;
+import tech.hillview.api.curator.client.test.server.AccountApiServer;
 
 
 @Configuration
@@ -53,8 +53,8 @@ public class AccountApiTestConfig {
   }
 
   @Bean
-  public ApiServer apiServer(CuratorFramework curator) {
-    return new ApiServer(curator);
+  public AccountApiServer apiServer(CuratorFramework curator) {
+    return new AccountApiServer(curator);
   }
 
   @Bean

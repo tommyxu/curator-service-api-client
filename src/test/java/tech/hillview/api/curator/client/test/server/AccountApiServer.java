@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import spark.Spark;
 import tech.hillview.api.curator.client.ServiceInstanceSerializer;
 
 import javax.annotation.PostConstruct;
@@ -29,8 +28,8 @@ import static spark.Spark.stop;
 
 
 @Component
-public class ApiServer implements Runnable {
-  private static final Logger log = LoggerFactory.getLogger(ApiServer.class);
+public class AccountApiServer implements Runnable {
+  private static final Logger log = LoggerFactory.getLogger(AccountApiServer.class);
 
   private int serverPort;
   private ServiceDiscovery<Map> serviceDiscovery;
@@ -38,7 +37,7 @@ public class ApiServer implements Runnable {
   @Autowired
   private CuratorFramework curator;
 
-  public ApiServer(CuratorFramework curator) {
+  public AccountApiServer(CuratorFramework curator) {
     this.curator = curator;
   }
 
