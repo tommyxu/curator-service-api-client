@@ -36,15 +36,15 @@ public class AccountApiTestConfig {
   }
 
   @Bean
-  public AccountServiceApi accountServiceApi(ApiClientFactory apiClientFactory) {
-    return apiClientFactory.create(AccountServiceApi.class);
-  }
-
-  @Bean
   public ApiClientBeanRegister scanner(ApiClientFactory apiClientFactory) {
     ApiClientBeanRegister register = new ApiClientBeanRegister();
     register.setApiClientFactory(apiClientFactory);
     register.setPackageNames(new String[] { "tech.hillview.api.curator.client.test" });
     return register;
+  }
+
+  @Bean
+  public AccountServiceApi accountServiceApi(ApiClientFactory apiClientFactory) {
+    return apiClientFactory.create(AccountServiceApi.class);
   }
 }

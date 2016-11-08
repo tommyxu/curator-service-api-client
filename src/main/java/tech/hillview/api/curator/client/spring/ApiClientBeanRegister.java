@@ -13,6 +13,9 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
 import tech.hillview.api.curator.client.ApiClientFactory;
 
+import java.util.HashSet;
+import java.util.Set;
+
 
 public class ApiClientBeanRegister implements BeanDefinitionRegistryPostProcessor {
   private static final Logger log = LoggerFactory.getLogger(ApiClientBeanRegister.class);
@@ -44,6 +47,14 @@ public class ApiClientBeanRegister implements BeanDefinitionRegistryPostProcesso
 
   public void setPackageNames(String[] packageNames) {
     this.packageNames = packageNames;
+  }
+
+  public void setPackageClasses(Class<?> packageClasses[]) {
+    Set<String> packageNames = new HashSet<>();
+    for (Class<?> packageClass : packageClasses) {
+      packageNames.add(packageClass.getPackage().getName());
+    }
+    setPackageNames(packageNames.toArray(new String[0]));
   }
 
   public ApiClientFactory getApiClientFactory() {
