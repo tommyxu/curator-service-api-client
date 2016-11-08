@@ -9,20 +9,23 @@ import java.math.BigDecimal;
 
 public class AccountCreationRequest {
 
-  private BigDecimal initialBalance;
+  private String name;
 
-  public BigDecimal getInitialBalance() {
-    return initialBalance;
+  private BigDecimal balance;
+
+  public BigDecimal getBalance() {
+    return balance;
   }
 
-  public void setInitialBalance(BigDecimal initialBalance) {
-    this.initialBalance = initialBalance;
+  public void setBalance(BigDecimal balance) {
+    this.balance = balance;
   }
 
-  public AccountCreationRequest() {
+  public String getName() {
+    return name;
   }
 
-  public AccountCreationRequest(BigDecimal initialBalance) {
-    this.initialBalance = initialBalance;
+  public void setName(String name) {
+    this.name = name;
   }
 }

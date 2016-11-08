@@ -8,16 +8,18 @@ package tech.hillview.api.curator.client.spring;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
+import org.springframework.stereotype.Component;
 import tech.hillview.api.curator.client.ApiClientFactory;
 
 import java.util.HashSet;
 import java.util.Set;
 
-
-public class ApiClientBeanRegister implements BeanDefinitionRegistryPostProcessor {
+@Component
+public class ApiClientBeanRegister implements BeanFactoryPostProcessor {
   private static final Logger log = LoggerFactory.getLogger(ApiClientBeanRegister.class);
 
   private String[] packageNames;
@@ -30,15 +32,16 @@ public class ApiClientBeanRegister implements BeanDefinitionRegistryPostProcesso
     this.apiClientFactory = apiClientFactory;
     this.packageNames = new String[] { packageName };
   }
-
-  @Override
-  public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
-    ApiClientClassPathScanner scanner = new ApiClientClassPathScanner(registry, apiClientFactory);
-    scanner.scan(packageNames);
-  }
+//
+//  @Override
+//  public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
+//
+//  }
 
   @Override
   public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
+    ApiClientClassPathScanner scanner = new ApiClientClassPathScanner((BeanDefinitionRegistry)beanFactory, apiClientFactory);
+    scanner.scan(packageNames);
   }
 
   public String[] getPackageNames() {

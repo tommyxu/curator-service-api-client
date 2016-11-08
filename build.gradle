@@ -7,13 +7,11 @@ buildscript {
 
 plugins {
   id "com.github.hierynomus.license" version "0.13.1"
-}
-plugins {
   id "net.vivin.gradle-semantic-build-versioning" version "2.0.2"
 }
 
 group = 'tech.hillview'
-// description = 'Curator-Service-Api-Client is an API client factory for services registered in ZooKeeper via Curator Framework or Spring Cloud ZooKeeper, featuring Service Discovery and Load balancing.'
+// version = '0.0.1'
 // version = ('git describe --tags'.execute()).text.trim()
 
 apply plugin: 'java'
@@ -37,7 +35,7 @@ jar {
     attributes(
       "Implementation-Title": project.name,
       "Implementation-Version": project.version
-      )
+    )
   }
 }
 
@@ -47,10 +45,13 @@ jar {
 //       outputDir = file("$buildDir/classes/main/")
 //   }
 // }
+// configurations.all {
+//   exclude group: "org.slf4j", module: "slf4j-log4j12"
+//   exclude group: "log4j", module: "log4j"
+// }
 
 configurations {
   all*.exclude group: 'log4j', module: 'log4j'
-  // all*.exclude group: 'log4j'
   // all*.exclude group: 'org.slf4j', module: 'slf4j-log4j12'
 }
 
@@ -77,11 +78,15 @@ dependencies {
   testCompile 'org.slf4j:jcl-over-slf4j:1.7.21'
 
   testCompile 'junit:junit:4.12'
-  // testCompile 'org.assertj:assertj-core:3.5.2'
+  testCompile 'org.assertj:assertj-core:3.5.2'
 
   testCompile 'org.springframework:spring-test:4.2.8.RELEASE'
   testCompile 'org.springframework:spring-context:4.2.8.RELEASE'
   testCompile 'org.springframework:spring-beans:4.2.8.RELEASE'
+
+  testCompile 'org.apache.curator:curator-test:2.11.0'
+  testCompile 'com.sparkjava:spark-core:2.5.2'
+
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
@@ -153,7 +158,7 @@ uploadArchives {
 
 test {
   testLogging {
-    // showStandardStreams = true
+    showStandardStreams = true
   }
 }
 

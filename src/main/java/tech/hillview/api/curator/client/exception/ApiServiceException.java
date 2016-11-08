@@ -17,10 +17,6 @@ public class ApiServiceException extends RuntimeException {
     this.body = body;
   }
 
-  public ApiServiceException(String message, Throwable cause) {
-    super(message, cause);
-  }
-
   private Object body;
 
 

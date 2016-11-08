@@ -32,7 +32,8 @@ public class ApiServiceExceptionConverterImpl implements ApiServiceExceptionConv
     } catch (Exception ex) {
       throw new ApiConfigException("Cannot parse error body to specified type " + errorBodyType);
     }
-    ApiServiceException apiServiceException = new ApiServiceException("Api client got error response.", error);
+    ApiServiceException apiServiceException =
+      new ApiServiceException("Got error response (status: " + statusCode + "): " + new String(errorBody), error);
     throw apiServiceException;
   }
 }

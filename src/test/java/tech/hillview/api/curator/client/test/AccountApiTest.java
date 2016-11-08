@@ -5,7 +5,6 @@
  */
 package tech.hillview.api.curator.client.test;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -16,11 +15,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import tech.hillview.api.curator.client.test.api.AccountCreationRequest;
 import tech.hillview.api.curator.client.test.api.AccountServiceApi;
+import tech.hillview.api.curator.client.test.config.AccountApiTestConfig;
 
 import java.math.BigDecimal;
+import java.util.concurrent.ThreadLocalRandom;
+
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ComponentScan
 @ContextConfiguration(classes = AccountApiTestConfig.class)
 public class AccountApiTest {
   private Logger log = LoggerFactory.getLogger(AccountApiTest.class);
@@ -28,20 +29,20 @@ public class AccountApiTest {
   @Autowired
   private AccountServiceApi serviceApi;
 
-  @Ignore
+//  @Ignore
   @Test
   public void testAccountServiceApi() throws Exception {
-    int times = 3;
-    int sleepTime = 1000;
-    for (int t = 0; t < times; t++) {
-      try {
-        Long accountId = serviceApi.createAccount(new AccountCreationRequest(BigDecimal.valueOf(times)));
-        log.info("account created: {}", accountId);
-      } catch (Exception ex) {
-        log.error("cannot create account on #{}", t);
-      }
-      log.info("wait a while");
-      Thread.sleep(sleepTime);
+    int sleepTime = 200;
+    try {
+      AccountCreationRequest accountCreationRequest = new AccountCreationRequest();
+      accountCreationRequest.setBalance(BigDecimal.TEN);
+      accountCreationRequest.setName("ACC_" + ThreadLocalRandom.current().nextInt());
+      Long accountId = serviceApi.createAccount(accountCreationRequest);
+      log.info("account created: {}", accountId);
+    } catch (Exception ex) {
+      log.error("cannot create account", ex);
     }
+    log.info("wait a while");
+    Thread.sleep(sleepTime);
   }
 }
