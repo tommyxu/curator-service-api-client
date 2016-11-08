@@ -48,7 +48,7 @@ You want a client factory to create one for you!
 
 ### Add Dependency
 
-Add the following dependency to your project.
+Add the following dependency to your project. Java SDK 1.8 or up is required.
 
 ```xml
 <dependency>
