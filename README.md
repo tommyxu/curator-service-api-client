@@ -9,6 +9,7 @@ Table of Contents
   * [What's This](#whats-this)
   * [Features](#features)
   * [Usage](#usage)
+     * [Add Dependency](#add-dependency)
      * [Prepare an API interface](#prepare-an-api-interface)
      * [Apply @ApiClient annotation](#apply-apiclient-annotation)
      * [Create ApiClientFactory](#create-apiclientfactory)
@@ -44,6 +45,18 @@ You want a client factory to create one for you!
 * Loosen *Retrofit* standard. Both `Call<T>` and `T` are supported as return type.
 
 ## Usage
+
+### Add Dependency
+
+Add the following dependency to your project.
+
+```xml
+<dependency>
+  <groupId>tech.hillview</groupId>
+  <artifactId>curator-service-api-client</artifactId>
+  <version>0.1.4</version>
+</dependency>
+```
 
 ### Prepare an API interface
 

@@ -1,4 +1,5 @@
 .USE_EXTERNAL_MAVEN
+.idea
 
 .gradle
 gradle.properties
