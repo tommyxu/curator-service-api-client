@@ -158,7 +158,7 @@ uploadArchives {
 
 test {
   testLogging {
-    showStandardStreams = true
+    // showStandardStreams = true
   }
 }
 
