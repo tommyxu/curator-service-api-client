@@ -56,13 +56,13 @@ Maven:
 <dependency>
   <groupId>tech.hillview</groupId>
   <artifactId>curator-service-api-client</artifactId>
-  <version>0.1.8</version>
+  <version>0.1.9</version>
 </dependency>
 ```
 
 Gradle:
 ```groovy
-compile 'tech.hillview:curator-service-api-client:0.1.8'
+compile 'tech.hillview:curator-service-api-client:0.1.9'
 ```
 
 ### Prepare an API interface
@@ -174,7 +174,7 @@ Note:
 
 ## Service Registration
 
-Since v0.1.7, we also provide a helper class to simplify service registration operation for a common application.
+Since v0.1.9, we also provide a helper class to simplify service registration operation for a common application.
 
 ```java
 private void registerService() {
