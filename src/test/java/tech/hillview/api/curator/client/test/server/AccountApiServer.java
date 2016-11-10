@@ -43,7 +43,7 @@ public class AccountApiServer implements Runnable {
 
   @PostConstruct
   public void run() {
-    serverPort = selectPort();
+    serverPort = selectPort(0);
 
     port(serverPort);
     initRoute();
@@ -70,8 +70,7 @@ public class AccountApiServer implements Runnable {
     }
   }
 
-  public int selectPort() {
-    int port = 0;
+  public int selectPort(int port) {
     if (port == 0) {
       try (ServerSocket s = new ServerSocket(0)) {
         port = s.getLocalPort();
