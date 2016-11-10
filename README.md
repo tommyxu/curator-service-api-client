@@ -15,7 +15,7 @@ Table of Contents
      * [Create ApiClientFactory](#create-apiclientfactory)
      * [Create ApiClient implementation](#create-apiclient-implementation)
   * [Spring Integration](#spring-integration)
-
+  * [Service Registration](#service-registration)
 
 ## What's This
 
@@ -43,6 +43,7 @@ You want a client factory to create one for you!
 * Protect your investment to re-use your *Retrofit* Java interface definition. You can easily remove this project off your dependencies when you decide to use *Retrofit* only, hope not.
 * Support fixed list of server urls in testing if ZooKeeper environment is not passed in.
 * Loosen *Retrofit* standard. Both `Call<T>` and `T` are supported as return type.
+* (Optional) A simple service instance registration helper for a common web application to register itself.
 
 ## Usage
 
@@ -54,7 +55,7 @@ Add the following dependency to your project. Java SDK 1.8 or up is required.
 <dependency>
   <groupId>tech.hillview</groupId>
   <artifactId>curator-service-api-client</artifactId>
-  <version>0.1.4</version>
+  <version>0.1.7</version>
 </dependency>
 ```
 
@@ -99,7 +100,7 @@ CuratorFramework curator = CuratorFrameworkFactory.newClient(zkUri, ...);
 curator.start();
 curator.blockUntilConnected();
 
-ApiClientFactory apiClientFactory = new ApiClientFactoryImpl(curator);
+ApiClientFactory apiClientFactory = ApiClientFactory.create(curator); // The concrete implementation is in ApiClientFactoryImpl
 ```
 
 If no curator is provided (or null), the ```url``` property on @ApiClient annotation is used to locate service instances.
@@ -134,7 +135,7 @@ public CuratorFramework curatorFramework() throws InterruptedException {
 
 @Bean
 public ApiClientFactory apiClientFactory(CuratorFramework curator) {
-  return new ApiClientFactoryImpl(curator);
+  return ApiClientFactory.create(curator);
 }
 
 @Bean
@@ -161,5 +162,21 @@ class UserService {
 
 Note:
 
-* The implementation return from `ApiClientFactory.create()` is **Thread-Safe**. You only need one API client instance for each service. Best used in singleton pattern with IoC framework, such as *Spring Framework* or *Guice*.
+* The client implementation returned from `ApiClientFactory.create()` is **Thread-Safe**. You need only one such instance for each service. Best used in singleton pattern with IoC framework, such as *Spring Framework* or *Guice*.
 * The creation of *CuratorFramework* instance is not necessary if you are using *Spring Cloud ZooKeeper*. Re-use it if possible.
+
+
+## Service Registration
+
+Since v0.1.7, we also provide a helper class to simplify service registration operation for a common application.
+
+```java
+private void registerService() {
+    serviceRegister = ServiceRegister.create(curator);
+    ServiceRegisterHelper.registerHttpService(serviceRegister, "account-service", serverPort);
+}
+```
+
+> It is not a replacement for service registration in some integration tools like `Spring Cloud ZooKeeper`.
+> We try to keep compatibility of discovering any service instances registered via `Curator Framework`.
+
