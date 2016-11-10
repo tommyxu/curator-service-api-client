@@ -6,20 +6,16 @@
 package tech.hillview.api.curator.client;
 
 import org.apache.curator.framework.CuratorFramework;
-import org.apache.curator.framework.state.ConnectionState;
-import org.apache.curator.x.discovery.ServiceCache;
 import org.apache.curator.x.discovery.ServiceDiscovery;
 import org.apache.curator.x.discovery.ServiceDiscoveryBuilder;
 import org.apache.curator.x.discovery.ServiceInstance;
 import org.apache.curator.x.discovery.ServiceProvider;
-import org.apache.curator.x.discovery.details.ServiceCacheListener;
 import org.apache.curator.x.discovery.strategies.RoundRobinStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tech.hillview.api.curator.client.exception.ApiCallException;
 
 import java.io.Closeable;
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;

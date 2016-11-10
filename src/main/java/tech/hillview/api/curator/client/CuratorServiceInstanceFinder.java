@@ -5,7 +5,6 @@
  */
 package tech.hillview.api.curator.client;
 
-import com.sun.tools.internal.jxc.ap.Const;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.state.ConnectionState;
 import org.apache.curator.x.discovery.ServiceCache;
