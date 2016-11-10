@@ -15,6 +15,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import tech.hillview.api.curator.client.ServiceInstanceSerializer;
+import tech.hillview.api.curator.client.ServiceRegister;
+import tech.hillview.api.curator.client.util.ServiceRegisterHelper;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -37,10 +39,11 @@ public class AccountApiServer implements Runnable {
   private static final Logger log = LoggerFactory.getLogger(AccountApiServer.class);
 
   private int serverPort;
-  private ServiceDiscovery<Map> serviceDiscovery;
 
   @Autowired
   private CuratorFramework curator;
+
+  private ServiceRegister serviceRegister;
 
   public AccountApiServer(CuratorFramework curator) {
     this.curator = curator;
@@ -90,33 +93,16 @@ public class AccountApiServer implements Runnable {
   @PreDestroy
   public void close() {
     try {
-      serviceDiscovery.close();
+      serviceRegister.close();
     } catch (IOException e) {
-      ;
+      log.warn("io", e);
     }
     stop();
   }
 
   private void registerService() {
-    ServiceInstance<Map> serviceInstance = new ServiceInstance<>("account-service", UUID.randomUUID().toString(),
-      "127.0.0.1", serverPort, null,
-      new HashMap<>(),
-      System.currentTimeMillis(), ServiceType.DYNAMIC,
-      null);
-
-    serviceDiscovery = ServiceDiscoveryBuilder.builder(Map.class)
-      .client(curator)
-      .basePath("/services") // properties.getRoot())
-      .serializer(new ServiceInstanceSerializer<>(Map.class))
-      .thisInstance(serviceInstance)
-      .build();
-
-    try {
-      serviceDiscovery.start();
-      log.debug("service registered");
-    } catch (Exception e) {
-      throw new RuntimeException("cannot register service", e);
-    }
+    serviceRegister = ServiceRegister.create(curator);
+    ServiceRegisterHelper.registerHttpService(serviceRegister, "account-service", serverPort);
   }
 
   public void setCurator(CuratorFramework curator) {

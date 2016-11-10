@@ -5,20 +5,22 @@
  */
 package tech.hillview.api.curator.client;
 
-import com.sun.tools.internal.jxc.ap.Const;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.state.ConnectionState;
 import org.apache.curator.x.discovery.ServiceCache;
 import org.apache.curator.x.discovery.ServiceDiscovery;
 import org.apache.curator.x.discovery.ServiceDiscoveryBuilder;
 import org.apache.curator.x.discovery.ServiceInstance;
+import org.apache.curator.x.discovery.ServiceProvider;
 import org.apache.curator.x.discovery.details.ServiceCacheListener;
+import org.apache.curator.x.discovery.strategies.RoundRobinStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tech.hillview.api.curator.client.exception.ApiCallException;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -26,62 +28,58 @@ import java.util.Map;
 /**
  * Created by tommy on 5/11/16.
  */
-class CuratorServiceInstanceFinder implements ServiceInstanceFinder, Closeable {
-  private Logger log = LoggerFactory.getLogger(CuratorServiceInstanceFinder.class);
+class CuratorServiceProviderFinder implements ServiceInstanceFinder, Closeable {
+  private Logger log = LoggerFactory.getLogger(CuratorServiceProviderFinder.class);
 
   private final CuratorFramework curator;
 
   private String serviceName;
-  private ServiceCache<Map> serviceCache;
+  private ServiceProvider<Map> serviceProvider;
 
-  public CuratorServiceInstanceFinder(CuratorFramework curator, String serviceName) {
+  public CuratorServiceProviderFinder(CuratorFramework curator, String serviceName) {
     this.curator = curator;
     this.serviceName = serviceName;
-    createServiceCache();
+    createServiceProvider();
   }
 
-  synchronized private void createServiceCache() {
+  synchronized private void createServiceProvider() {
     ServiceDiscovery<Map> serviceDiscovery = ServiceDiscoveryBuilder.builder(Map.class)
       .client(curator)
       .basePath(Constants.SERVICES_PATH)
       .serializer(new ServiceInstanceSerializer<>(Map.class))
       .build();
 
-    serviceCache = serviceDiscovery.serviceCacheBuilder()
-      .name(serviceName)
+    serviceProvider = serviceDiscovery.serviceProviderBuilder()
+      .serviceName(serviceName)
+      .providerStrategy(new RoundRobinStrategy<>())
+      // .threadFactory()
+      // .additionalFilter()
+      // .downInstancePolicy()
       .build();
 
-    serviceCache.addListener(new ServiceCacheListener() {
-      @Override
-      public void cacheChanged() {
-        log.debug("service {} instance changed to '{}'.", serviceName, serviceCache.getInstances());
-      }
-      @Override
-      public void stateChanged(CuratorFramework client, ConnectionState newState) {
-        log.warn("ZooKeeper connection state changed: {}", newState);
-      }
-    });
-
     try {
-      serviceCache.start();
-      log.debug("service cache started.");
+      serviceProvider.start();
+      log.debug("service provider started working.");
     } catch (Exception ex) {
-      throw new ApiCallException("Cannot start service discovery", ex);
+      throw new ApiCallException("Cannot start service provider working", ex);
     }
   }
 
   @Override
   public void close() {
     try {
-      serviceCache.close();
-    } catch (IOException e) {
-      log.warn("serviceCache close error. the connection could have been lost.");
+      serviceProvider.close();
+    } catch (Exception e) {
+      log.warn("serviceProvider close error. The connection could have been lost.");
     }
   }
 
   @Override
   public List<ServiceInstance<Map>> getServiceInstance() {
-    List<ServiceInstance<Map>> instanceList = serviceCache.getInstances();
-    return instanceList;
+    try {
+      return Collections.singletonList(serviceProvider.getInstance());
+    } catch (Exception e) {
+      throw new ApiCallException("service instance fetch error", e);
+    }
   }
 }

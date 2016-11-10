@@ -5,6 +5,7 @@
  */
 package tech.hillview.api.curator.client;
 
+import com.google.common.base.Preconditions;
 import tech.hillview.api.curator.client.annotation.ApiClient;
 import tech.hillview.api.curator.client.exception.ApiConfigException;
 
@@ -18,12 +19,15 @@ public class ApiInterfaceMeta {
   private String path;
   private Class<?> errorBodyType;
   private String[] urls;
+  private Class<?> apiInterface;
 
   public <T> ApiInterfaceMeta(Class<T> apiInterface) {
+    Preconditions.checkNotNull(apiInterface);
     ApiClient clientAnnotation = apiInterface.getAnnotation(ApiClient.class);
     if (clientAnnotation == null) {
       throw new ApiConfigException("Annotation not found");
     }
+    setApiInterface(apiInterface);
     setPath(clientAnnotation.path());
     setUrls(clientAnnotation.url());
     setService(clientAnnotation.service().length() == 0 ? apiInterface.getSimpleName() : clientAnnotation.service());
@@ -60,5 +64,13 @@ public class ApiInterfaceMeta {
 
   public void setErrorBodyType(Class<?> errorBodyType) {
     this.errorBodyType = errorBodyType;
+  }
+
+  public Class<?> getApiInterface() {
+    return apiInterface;
+  }
+
+  public void setApiInterface(Class<?> apiInterface) {
+    this.apiInterface = apiInterface;
   }
 }

@@ -32,7 +32,7 @@ public class DirectCallAdapterFactory extends CallAdapter.Factory {
 
   @Override
   public CallAdapter<?> get(final Type returnType, Annotation[] annotations, Retrofit retrofit) {
-    log.debug("get a new call adapter.");
+    log.debug("Get a new call adapter of {}", interfaceMeta.getApiInterface());
 
     return new CallAdapter<Object>() {
       boolean returnCallType = false;

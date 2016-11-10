@@ -12,7 +12,6 @@ import org.apache.curator.test.TestingServer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import tech.hillview.api.curator.client.ApiClientFactory;
-import tech.hillview.api.curator.client.ApiClientFactoryImpl;
 import tech.hillview.api.curator.client.spring.ApiClientBeanRegister;
 import tech.hillview.api.curator.client.test.server.AccountApiServer;
 
@@ -53,15 +52,15 @@ public class AccountApiTestConfig {
   }
 
   @Bean
-  public AccountApiServer apiServer(CuratorFramework curator) {
-    return new AccountApiServer(curator);
-  }
-
-  @Bean
   public static ApiClientBeanRegister scanner(ApiClientFactory apiClientFactory) {
     ApiClientBeanRegister register = new ApiClientBeanRegister();
     register.setApiClientFactory(apiClientFactory);
     register.setPackageNames(new String[] { "tech.hillview.api.curator.client.test" });
     return register;
+  }
+
+  @Bean
+  public AccountApiServer apiServer(CuratorFramework curator) {
+    return new AccountApiServer(curator);
   }
 }

@@ -35,11 +35,10 @@ public class ApiClientFactoryImpl implements ApiClientFactory {
   }
 
   private Cache createCache() {
-    Cache cache = CacheBuilder.newBuilder()
-      .maximumSize(100)
-      .expireAfterAccess(10, TimeUnit.MINUTES)
+    return CacheBuilder.newBuilder()
+      .maximumSize(50)
+      .expireAfterAccess(15, TimeUnit.MINUTES)
       .build();
-    return cache;
   }
 
   @Override
@@ -47,21 +46,29 @@ public class ApiClientFactoryImpl implements ApiClientFactory {
     final ApiInterfaceMeta apiInterfaceMeta = new ApiInterfaceMeta(apiInterface);
 
     final ServiceInstanceFinder finder;
+    final ServiceInstanceChooser instanceChooser;
     if (curator != null) {
-      finder = new CuratorServiceInstanceFinder(curator, apiInterfaceMeta.getService());
+//      finder = new CuratorServiceInstanceFinder(curator, apiInterfaceMeta.getService());
+//      instanceChooser = new RoundRobinServiceChooser();
+      finder = new CuratorServiceProviderFinder(curator, apiInterfaceMeta.getService());
+      instanceChooser = new StickyServiceChooser();
     } else {
       finder = new FixedListServiceInstanceFinder(apiInterfaceMeta.getService(), apiInterfaceMeta.getUrls());
+      instanceChooser = new RoundRobinServiceChooser();
     }
-
-    final ServiceInstanceChooser instanceChooser = new RoundRobinServiceChooser();
-
-    final ApiInvokerCreator apiInvokerCreator = new ApiInvokerRetrofitClientCreator();
 
     final Cache<String, T> cache = createCache();
 
-    Object proxy = Proxy.newProxyInstance(getClass().getClassLoader(), new Class<?>[] { apiInterface }, new InvocationHandler() {
+    final ApiInvokerCreator apiInvokerCreator = new ApiInvokerRetrofitClientCreator();
+
+    Object proxy = Proxy.newProxyInstance(getClass().getClassLoader(),
+      new Class<?>[] { apiInterface }, new InvocationHandler() {
+
       @Override
       public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+
+        log.debug("Call API method: {}", method.getName());
+
         Optional<ServiceInstance> instance = instanceChooser.chooseServiceInstance(finder.getServiceInstance());
         if (instance.isPresent()) {
           ServiceInstance serviceInstance = instance.get();
@@ -70,7 +77,7 @@ public class ApiClientFactoryImpl implements ApiClientFactory {
           String cacheKey = serviceInstance.getId() + serviceInstance.getAddress(); // serviceInstance.getPort() + serviceInstance.getSslPort();
           T target = cache.get(cacheKey, () -> {
             T apiInvoker = apiInvokerCreator.getInvoker(apiInterface, apiInterfaceMeta, serviceInstance);
-            log.debug("create api {} for service instance: {}", apiInterfaceMeta.getService(), serviceInstance.getId());
+            log.debug("Create service instance of {}: {}", apiInterfaceMeta.getService(), serviceInstance.getId());
             return apiInvoker;
           });
 

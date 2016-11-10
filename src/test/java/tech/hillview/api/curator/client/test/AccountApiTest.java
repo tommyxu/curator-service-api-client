@@ -24,7 +24,7 @@ import java.util.concurrent.ThreadLocalRandom;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = AccountApiTestConfig.class)
 public class AccountApiTest {
-  private Logger log = LoggerFactory.getLogger(AccountApiTest.class);
+  private static final Logger log = LoggerFactory.getLogger(AccountApiTest.class);
 
   @Autowired
   private AccountServiceApi serviceApi;
