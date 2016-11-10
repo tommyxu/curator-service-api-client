@@ -55,7 +55,7 @@ Add the following dependency to your project. Java SDK 1.8 or up is required.
 <dependency>
   <groupId>tech.hillview</groupId>
   <artifactId>curator-service-api-client</artifactId>
-  <version>0.1.7</version>
+  <version>0.1.8</version>
 </dependency>
 ```
 
