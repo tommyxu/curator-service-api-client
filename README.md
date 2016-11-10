@@ -51,12 +51,18 @@ You want a client factory to create one for you!
 
 Add the following dependency to your project. Java SDK 1.8 or up is required.
 
+Maven:
 ```xml
 <dependency>
   <groupId>tech.hillview</groupId>
   <artifactId>curator-service-api-client</artifactId>
   <version>0.1.8</version>
 </dependency>
+```
+
+Gradle:
+```groovy
+compile 'tech.hillview:curator-service-api-client:0.1.8'
 ```
 
 ### Prepare an API interface
