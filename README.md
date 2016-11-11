@@ -28,7 +28,8 @@ Usually, services are registered in ZooKeeper at *'/services'* like the followin
 /services/account-service/466885c8-1589-40ed-8310-c10b487d050b
 ```
 
-> If you don't know how to register services in ZooKeeper. You can use *Spring Cloud ZooKeeper*, or *Curator Framework (with Service Discovery Extenstion)* directly.
+> If you are not familiar with registering services in ZooKeeper, you can use *Spring Cloud ZooKeeper*, or deal with *Curator Framework (with Service Discovery Extenstion)* directly. 
+> Optionally, refer to the chapter [Service Registration](#service-registration) to use the helper we provide.
 
 You try to call its RESTful API on them, but without any mood to dealing with instance discovery and load-balancing.
 
