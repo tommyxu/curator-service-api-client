@@ -184,6 +184,6 @@ private void registerService() {
 }
 ```
 
-> It is not a replacement for service registration in some integration tools like `Spring Cloud ZooKeeper`.
-> We try to keep compatibility of discovering any service instances registered via `Curator Framework`.
+> It is not a replacement for service registration you can found in some framework like `Spring Cloud ZooKeeper`.
+> Our aim is trying to keep compatibility of any implementation of service registration/discovering via `Curator Framework`.
 
