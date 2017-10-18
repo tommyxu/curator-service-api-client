@@ -1,19 +1,15 @@
 buildscript {
   repositories {
-    mavenCentral()
     jcenter()
-  }
-  dependencies {
-    classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.3"
+    mavenCentral()
   }
 }
 
 plugins {
-  id "com.github.hierynomus.license" version "0.13.1"
-  id "net.vivin.gradle-semantic-build-versioning" version "2.0.2"
+  id "com.github.hierynomus.license" version "0.14.0"
+  // id "net.vivin.gradle-semantic-build-versioning" version "4.0.0"
+  id "io.codearte.nexus-staging" version "0.11.0"
 }
-
-apply plugin: 'io.codearte.nexus-staging'
 
 group = 'tech.hillview'
 // version = '0.0.1'
@@ -44,12 +40,6 @@ jar {
   }
 }
 
-// idea {
-//   module {
-//     inheritOutputDirs = false
-//       outputDir = file("$buildDir/classes/main/")
-//   }
-// }
 // configurations.all {
 //   exclude group: "org.slf4j", module: "slf4j-log4j12"
 //   exclude group: "log4j", module: "log4j"
@@ -91,7 +81,6 @@ dependencies {
 
   testCompile 'org.apache.curator:curator-test:2.11.0'
   testCompile 'com.sparkjava:spark-core:2.5.2'
-
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
@@ -170,7 +159,7 @@ uploadArchives {
 
 test {
   testLogging {
-    // showStandardStreams = true
+    showStandardStreams = true
   }
 }
 
@@ -179,9 +168,3 @@ license {
   strictCheck true
 }
 
-project.version.with {
-  // matching {
-  //   major = 1
-  //   minor = 2
-  // }
-}
