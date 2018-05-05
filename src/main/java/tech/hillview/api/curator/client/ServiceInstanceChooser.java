@@ -15,6 +15,6 @@ import java.util.Optional;
 /**
  * Created by tommy on 5/11/16.
  */
-interface ServiceInstanceChooser {
+public interface ServiceInstanceChooser {
   Optional<ServiceInstance> chooseServiceInstance(List<ServiceInstance<Map>> serviceName);
 }

@@ -14,6 +14,6 @@ import java.util.Map;
 /**
  * Created by tommy on 5/11/16.
  */
-interface ServiceInstanceFinder {
+public interface ServiceInstanceFinder {
   List<ServiceInstance<Map>> getServiceInstance();
 }

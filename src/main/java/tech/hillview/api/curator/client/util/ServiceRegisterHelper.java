@@ -36,7 +36,7 @@ public class ServiceRegisterHelper {
       port,
       null,
       "http",
-      getAddressList(),
+      addressList,
       Collections.emptyMap()
     );
   }

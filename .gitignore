@@ -5,5 +5,6 @@
 gradle.properties
 
 /build
+/out
 
 src/test/java/tech/hillview/api/curator/client/test/internal/

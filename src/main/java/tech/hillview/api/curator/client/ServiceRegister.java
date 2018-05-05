@@ -17,9 +17,9 @@ import java.util.Map;
  */
 public interface ServiceRegister extends Closeable {
   /**
-   * register a service instance. default implementation is registering to ZooKeeper via Curator.
+   * register a service chooser. default implementation is registering to ZooKeeper via Curator.
    * @param name service name
-   * @param id instance id, usually a UUID
+   * @param id chooser id, usually a UUID
    * @param address ip address
    * @param port access port
    * @param sslPort ssl port, can be null

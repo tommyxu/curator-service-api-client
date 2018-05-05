@@ -75,7 +75,7 @@ class CuratorServiceProviderFinder implements ServiceInstanceFinder, Closeable {
     try {
       return Collections.singletonList(serviceProvider.getInstance());
     } catch (Exception e) {
-      throw new ApiCallException("service instance fetch error", e);
+      throw new ApiCallException("service chooser fetch error", e);
     }
   }
 }

@@ -12,6 +12,7 @@ import org.apache.curator.x.discovery.ServiceInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tech.hillview.api.curator.client.exception.ApiCallException;
+import tech.hillview.api.curator.client.chooser.*;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
@@ -35,8 +36,8 @@ public class ApiClientFactoryImpl implements ApiClientFactory {
   }
 
   private Cache createCache() {
-    return CacheBuilder.newBuilder()
-      .maximumSize(50)
+    return CacheBuilder.<String, Object>newBuilder()
+      .maximumSize(100)
       .expireAfterAccess(15, TimeUnit.MINUTES)
       .build();
   }
@@ -48,13 +49,12 @@ public class ApiClientFactoryImpl implements ApiClientFactory {
     final ServiceInstanceFinder finder;
     final ServiceInstanceChooser instanceChooser;
     if (curator != null) {
-//      finder = new CuratorServiceInstanceFinder(curator, apiInterfaceMeta.getService());
-//      instanceChooser = new RoundRobinServiceChooser();
-      finder = new CuratorServiceProviderFinder(curator, apiInterfaceMeta.getService());
-      instanceChooser = new StickyServiceChooser();
+      finder = new CuratorServiceInstanceFinder(curator, apiInterfaceMeta.getService());
+      instanceChooser = new RoundRobinChooser();
+//      instanceChooser = new StickyServiceChooser();
     } else {
       finder = new FixedListServiceInstanceFinder(apiInterfaceMeta.getService(), apiInterfaceMeta.getUrls());
-      instanceChooser = new RoundRobinServiceChooser();
+      instanceChooser = new RoundRobinChooser();
     }
 
     final Cache<String, T> cache = createCache();
@@ -77,7 +77,7 @@ public class ApiClientFactoryImpl implements ApiClientFactory {
           String cacheKey = serviceInstance.getId() + serviceInstance.getAddress(); // serviceInstance.getPort() + serviceInstance.getSslPort();
           T target = cache.get(cacheKey, () -> {
             T apiInvoker = apiInvokerCreator.getInvoker(apiInterface, apiInterfaceMeta, serviceInstance);
-            log.debug("Create service instance of {}: {}", apiInterfaceMeta.getService(), serviceInstance.getId());
+            log.debug("Create service chooser of {}: {}", apiInterfaceMeta.getService(), serviceInstance.getId());
             return apiInvoker;
           });
 
@@ -91,7 +91,7 @@ public class ApiClientFactoryImpl implements ApiClientFactory {
             }
           }
         } else {
-          throw new ApiCallException("No server instance");
+          throw new ApiCallException("No server chooser");
         }
       }
     });

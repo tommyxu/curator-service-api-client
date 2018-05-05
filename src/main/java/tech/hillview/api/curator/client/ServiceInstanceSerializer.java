@@ -27,7 +27,7 @@ public class ServiceInstanceSerializer<T> extends JsonInstanceSerializer<T> impl
   {
     String json = new String(bytes);
     json = json.replaceAll("\"@class\"", "\"_ignore\"");
-    log.debug("Parse service instance from json string (patched): {}", json);
+    log.debug("Parse service chooser from json string (patched): {}", json);
     return super.deserialize(json.getBytes());
   }
 }

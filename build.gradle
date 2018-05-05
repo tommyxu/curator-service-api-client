@@ -51,14 +51,13 @@ configurations {
 }
 
 dependencies {
-  compile('org.apache.zookeeper:zookeeper:3.4.9') {
-    exclude group: 'org.slf4j', module: 'slf4j-log4j12'
-  }
+//  compile('org.apache.zookeeper:zookeeper:3.4.9') {
+//    exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+//  }
 
-  compile 'org.apache.curator:curator-x-discovery:2.11.0'
-  compile 'org.apache.curator:curator-framework:2.11.0'
+  compile 'org.apache.curator:curator-x-discovery:4.0.1'
 
-  compile 'com.google.guava:guava:17.0'
+//  compile 'com.google.guava:guava:17.0'
 
   compile 'com.squareup.retrofit2:retrofit:2.1.0'
   compile 'com.squareup.retrofit2:converter-jackson:2.1.0'

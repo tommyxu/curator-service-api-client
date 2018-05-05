@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface ApiClient {
-  String service(); // for search in the zookeeper registry
+  String service(); // service name in the zookeeper registry
 
   String path() default ""; // path prefix, /api/v1/
 

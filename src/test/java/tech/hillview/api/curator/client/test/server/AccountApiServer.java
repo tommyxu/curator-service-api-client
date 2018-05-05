@@ -64,7 +64,7 @@ public class AccountApiServer implements Runnable {
 
   private void waitForDiscoverySync() {
     try {
-      Thread.sleep(1000);
+      Thread.sleep(2000);
     } catch (InterruptedException e) {
       e.printStackTrace();
     }

@@ -53,7 +53,7 @@ class CuratorServiceInstanceFinder implements ServiceInstanceFinder, Closeable {
     serviceCache.addListener(new ServiceCacheListener() {
       @Override
       public void cacheChanged() {
-        log.debug("service {} instance changed to '{}'.", serviceName, serviceCache.getInstances());
+        log.debug("service {} chooser changed to '{}'.", serviceName, serviceCache.getInstances());
       }
       @Override
       public void stateChanged(CuratorFramework client, ConnectionState newState) {
