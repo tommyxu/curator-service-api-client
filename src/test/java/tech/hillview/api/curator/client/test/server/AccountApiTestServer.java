@@ -27,8 +27,8 @@ import static spark.Spark.stop;
 
 
 @Component
-public class AccountApiServer implements Runnable {
-  private static final Logger log = LoggerFactory.getLogger(AccountApiServer.class);
+public class AccountApiTestServer implements Runnable {
+  private static final Logger log = LoggerFactory.getLogger(AccountApiTestServer.class);
 
   private int serverPort;
 
@@ -37,19 +37,20 @@ public class AccountApiServer implements Runnable {
 
   private ServiceRegister serviceRegister;
 
-  public AccountApiServer(CuratorFramework curator) {
+  public AccountApiTestServer(CuratorFramework curator) {
     this.curator = curator;
   }
 
   @PostConstruct
   public void run() {
+    log.info("Start Run API Server");
+
     serverPort = selectPort(0);
 
     port(serverPort);
     initRoute();
     awaitInitialization();
     registerService();
-
     waitForDiscoverySync();
   }
 
@@ -59,6 +60,11 @@ public class AccountApiServer implements Runnable {
     post("/api/v1/account", (req, res) -> {
       String t = req.body();
       return "" + accountId.getAndIncrement();
+    });
+    get("/api/v1/account/:accountId", (req, res) -> {
+//      String t = req.body();
+      res.status(400);
+      return "{ \"code\": \"123\" }";
     });
   }
 

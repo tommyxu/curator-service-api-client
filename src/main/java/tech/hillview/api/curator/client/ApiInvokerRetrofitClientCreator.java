@@ -43,6 +43,6 @@ class ApiInvokerRetrofitClientCreator implements ApiInvokerCreator {
       .addConverterFactory(JacksonConverterFactory.create(objectMapper))
       .build();
 
-    T api = retrofit.create(apiInterface);
-    return api;  }
+    return retrofit.create(apiInterface);
+  }
 }

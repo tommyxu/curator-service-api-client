@@ -3,7 +3,7 @@
  *                            Version 2.0, January 2004
  *                         http://www.apache.org/licenses/
  */
-package tech.hillview.api.curator.client;
+package tech.hillview.api.curator.client.finder;
 
 import org.apache.curator.x.discovery.ServiceInstance;
 import org.apache.curator.x.discovery.ServiceType;
@@ -23,7 +23,7 @@ import java.util.UUID;
 /**
  * Created by tommy on 5/11/16.
  */
-class FixedListServiceInstanceFinder implements ServiceInstanceFinder {
+public class FixedListServiceInstanceFinder implements ServiceInstanceFinder {
   private List<ServiceInstance<Map>> fixedInstances;
 
   public FixedListServiceInstanceFinder() {

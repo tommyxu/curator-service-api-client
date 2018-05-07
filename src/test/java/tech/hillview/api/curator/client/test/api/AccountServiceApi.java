@@ -12,7 +12,7 @@ import retrofit2.http.Path;
 import tech.hillview.api.curator.client.annotation.ApiClient;
 
 
-@ApiClient(service = "account-service", path = "/api/v1/", url = "http://localhost:8080")
+@ApiClient(service = "account-service", path = "/api/v1/", errorBodyType = ErrorBody.class) //, url = "http://localhost:8080")
 public interface AccountServiceApi {
   @POST("account")
   Long createAccount(@Body AccountCreationRequest request);

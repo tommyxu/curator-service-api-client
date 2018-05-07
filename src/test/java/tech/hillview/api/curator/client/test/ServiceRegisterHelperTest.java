@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Created by tommy on 11/11/16.
  */
-public class ServiceRegisterTest {
+public class ServiceRegisterHelperTest {
   private static final Logger log = LoggerFactory.getLogger(AccountApiTest.class);
 
   @Test

@@ -3,7 +3,7 @@
  *                            Version 2.0, January 2004
  *                         http://www.apache.org/licenses/
  */
-package tech.hillview.api.curator.client;
+package tech.hillview.api.curator.client.finder;
 
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.state.ConnectionState;
@@ -14,7 +14,11 @@ import org.apache.curator.x.discovery.ServiceInstance;
 import org.apache.curator.x.discovery.details.ServiceCacheListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tech.hillview.api.curator.client.Constants;
+import tech.hillview.api.curator.client.ServiceInstanceFinder;
+import tech.hillview.api.curator.client.ServiceInstanceSerializer;
 import tech.hillview.api.curator.client.exception.ApiCallException;
+import tech.hillview.api.curator.client.exception.ApiConfigException;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -25,7 +29,7 @@ import java.util.Map;
 /**
  * Created by tommy on 5/11/16.
  */
-class CuratorServiceInstanceFinder implements ServiceInstanceFinder, Closeable {
+public class CuratorServiceInstanceFinder implements ServiceInstanceFinder, Closeable {
   private Logger log = LoggerFactory.getLogger(CuratorServiceInstanceFinder.class);
 
   private final CuratorFramework curator;
@@ -65,7 +69,7 @@ class CuratorServiceInstanceFinder implements ServiceInstanceFinder, Closeable {
       serviceCache.start();
       log.debug("service cache started.");
     } catch (Exception ex) {
-      throw new ApiCallException("Cannot start service discovery", ex);
+      throw new ApiConfigException("Cannot start service discovery", ex);
     }
   }
 

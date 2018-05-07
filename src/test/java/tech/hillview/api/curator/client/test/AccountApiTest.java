@@ -12,7 +12,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import tech.hillview.api.curator.client.exception.ApiCallException;
+import tech.hillview.api.curator.client.exception.ApiServiceException;
 import tech.hillview.api.curator.client.test.api.AccountCreationRequest;
+import tech.hillview.api.curator.client.test.api.AccountInfo;
 import tech.hillview.api.curator.client.test.api.AccountServiceApi;
 import tech.hillview.api.curator.client.test.config.AccountApiTestConfig;
 
@@ -28,10 +31,8 @@ public class AccountApiTest {
   @Autowired
   private AccountServiceApi serviceApi;
 
-//  @Ignore
   @Test
-  public void testAccountServiceApi() throws Exception {
-    int sleepTime = 200;
+  public void testAccountServiceApi() {
     try {
       AccountCreationRequest accountCreationRequest = new AccountCreationRequest();
       accountCreationRequest.setBalance(BigDecimal.TEN);
@@ -40,8 +41,13 @@ public class AccountApiTest {
       log.info("account created: {}", accountId);
     } catch (Exception ex) {
       log.error("cannot create account", ex);
+      throw ex;
     }
-    log.info("wait a while");
-    Thread.sleep(sleepTime);
+  }
+
+  @Test(expected = ApiServiceException.class)
+  public void testErrorResponse() {
+    AccountInfo account = serviceApi.getAccount(1L);
+    log.info("account created: {}", account);
   }
 }

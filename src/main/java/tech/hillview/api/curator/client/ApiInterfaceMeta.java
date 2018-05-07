@@ -13,7 +13,7 @@ import tech.hillview.api.curator.client.exception.ApiConfigException;
 /**
  * Created by tommy on 5/11/16.
  */
-public class ApiInterfaceMeta {
+class ApiInterfaceMeta {
 
   private String service;
   private String path;

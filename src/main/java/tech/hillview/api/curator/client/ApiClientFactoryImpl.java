@@ -13,6 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tech.hillview.api.curator.client.exception.ApiCallException;
 import tech.hillview.api.curator.client.chooser.*;
+import tech.hillview.api.curator.client.finder.CuratorServiceInstanceFinder;
+import tech.hillview.api.curator.client.finder.FixedListServiceInstanceFinder;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
@@ -91,7 +93,7 @@ public class ApiClientFactoryImpl implements ApiClientFactory {
             }
           }
         } else {
-          throw new ApiCallException("No server chooser");
+          throw new ApiCallException("No instance could be found.");
         }
       }
     });
