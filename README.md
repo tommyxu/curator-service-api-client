@@ -1,3 +1,5 @@
+Disclaimer: This project is deprecated and not maintained any more. We are working on a new project of redesigned code structure for micro-services based on Spring Cloud framework.
+
 # Curator-Service-Api-Client
 
 Curator-Service-Api-Client is an API client factory for services registered in *ZooKeeper* via *Curator Framework* or *Spring Cloud ZooKeeper*, featuring **Service Discovery** and **Load balancing**.
